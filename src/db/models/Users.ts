@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import { database } from '../instances/mysql';
 
-import { ProfilesSchema } from './Profiles';
+import ProfilesSchema from './Profiles';
 
 
 interface UsersInstance extends Model {
@@ -15,7 +15,7 @@ interface UsersInstance extends Model {
 
 
 const UserSchema = database.define<UsersInstance>(
-  'Users',
+  'users',
   {
     id: {
       type: DataTypes.INTEGER,

@@ -1,39 +1,48 @@
 import assert from 'assert';
-import ProfilesSchema from "../../db/models/Profiles";
+import UsersSchema from "../../db/models/Users";
 import MySql from '../../db/strategies/mySql';
 import ContextStrategy from "../../db/strategies/base/contextStrategy";
 
 
-const context = new ContextStrategy(new MySql(ProfilesSchema));
+const context = new ContextStrategy(new MySql(UsersSchema));
 
 
 const PROFILE = {
-  profile: "ClientTEST"
+  name: "test",
+  email: "test@example.com",
+  password: "123456",
+  datebirth: "29/04/2004",
+  profile: 22
 }
 
 const PROFILE_UPDATE = {
-  profile: "ClientUPDATE"
+  name: "testUPDATE",
+  email: "testUPDATE@example.com",
+  password: "123456",
+  datebirth: "29/04/2003",
+  profile: 22
 }
 
 const NEW_PROFILE = {
-  profile: "newProfile"
+  name: "testNEW",
+  email: "testNEW@example.com",
+  password: "1234567",
+  datebirth: "29/04/2002",
+  profile: 22
 }
 
-describe('Profile model', () => {
+describe('Users model', () => {
   beforeAll(async () => {
-    const item = await context.read(PROFILE);
-    const [itemJSON] = JSON.parse(JSON.stringify(item));
-    
-    await context.delete(itemJSON.id);
+    await context.delete(-1);
     await context.create(PROFILE_UPDATE);
   });
 
-  it('Profile connection', async () => {
+  it('Users connection', async () => {
     const res = await context.isConnected();
     assert.equal(res, true);
   });
   
-  it('Profile create', async () => {
+  it('User create', async () => {
     const res = await context.create(PROFILE);
     const resJSON = JSON.parse(JSON.stringify(res));
     
@@ -42,7 +51,7 @@ describe('Profile model', () => {
     assert.deepEqual(resJSON, PROFILE);
   });
 
-  it('Profile read', async () => {
+  it('User read', async () => {
     const res = await context.read(PROFILE);
 
     const [resJSON] = JSON.parse(JSON.stringify(res));
@@ -51,10 +60,9 @@ describe('Profile model', () => {
     assert.deepEqual(resJSON, PROFILE);
   });
 
-  it('Profile update', async () => {
+  it('User update', async () => {
     const itemUpdate = await context.read(PROFILE_UPDATE);
     const [itemUpdateJSON] = JSON.parse(JSON.stringify(itemUpdate));
-
 
     const res = await context.update(itemUpdateJSON.id, NEW_PROFILE);
 
@@ -65,7 +73,7 @@ describe('Profile model', () => {
     assert.deepEqual(itemUpdatedJSON.profile, NEW_PROFILE.profile)
   });
 
-  it('Profile delete', async () => {
+  it('User delete', async () => {
     const item = await context.read(NEW_PROFILE);
     const [itemJSON] = JSON.parse(JSON.stringify(item));
     

@@ -1,7 +1,6 @@
 import { Router, Request, Response } from "express";
 import * as UserController from "../controllers/userController";
 import Middleware from "../middlewars/auth";
-import UsersSchema from "../models/Users";
 
 
 const router = Router();
