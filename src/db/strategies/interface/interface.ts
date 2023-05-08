@@ -17,7 +17,7 @@ export default class ICrud {
     throw new NotImplementedException();
   }
 
-  update(id: any, item: any) {
+  update(fildName: string, id: any, item: any) {
     throw new NotImplementedException();
   }
 

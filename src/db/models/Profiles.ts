@@ -1,16 +1,17 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 import { database } from '../instances/mysql';
-import ICrud from '../strategies/interface/interface';
 
 interface ProfilesInstance extends Model {
   id: number;
   profile: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 const ProfilesSchema = database.define<ProfilesInstance>(
   'profiles',
   {
-    id: {
+    id_profile: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -19,10 +20,27 @@ const ProfilesSchema = database.define<ProfilesInstance>(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
-    }
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
   }, {
-    timestamps: false,
+    timestamps: true,
     tableName: 'profiles',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    hooks: {
+      beforeSave: (profile, options) => {
+        profile.updated_at = new Date();
+      },
+    },
   }
 )
 

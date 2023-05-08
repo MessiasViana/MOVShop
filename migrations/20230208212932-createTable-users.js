@@ -1,6 +1,6 @@
 'use strict';
 
-const { DataTypes } = require('sequelize');
+const DataTypes = require('sequelize');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
     await queryInterface.createTable(
       'users',
       {
-        id: {
+        id_user: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true,
@@ -25,19 +25,34 @@ module.exports = {
           type: DataTypes.STRING,
           allowNull: false,
         },
-        datebirth: {
-          type: DataTypes.STRING,
+        birthday: {
+          type: DataTypes.DATE,
           allowNull: false,
         },
-        profile: {
+        id_profile: {
           type: DataTypes.INTEGER,
           autoIncrement: false,
           allowNull: false,
           references: {
             model: 'profiles',
-            key: 'id',
+            key: 'id_profile',
           }
+        },
+        created_at: {
+          type: DataTypes.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        },
+        updated_at: {
+          type: DataTypes.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         }
+      }, {
+        timestamps: true,
+        tableName: 'users',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
       }
     ); 
   },

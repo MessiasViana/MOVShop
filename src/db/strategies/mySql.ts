@@ -36,17 +36,21 @@ export default class MySql extends ICrud {
     return dataValues;
   }
 
-  async read(item: ModelsItems):  Promise<ModelsItems>{
-    const dataValues = await this._model.findAll({ where: item }, { raw: true });
+  async read(item: any):  Promise<any>{
+    const dataValues = await this._model.findAll({ where: item });
     return dataValues;
   }
 
-  async update(id: number, item: ModelsItems) {
-    return await this._model.update(item, {where: {id}});
+  async update(fildName: string, id: number, item: ModelsItems) {
+    return await this._model.update(item, {
+      where: {
+        [fildName]: id
+      }
+    });
   }
 
   async delete(id: number) {
-    const query = id === -1 ? {} : {id};
+    const query = id === -1 ? {} : { id };
     return await this._model.destroy({where: query});
   }
 }

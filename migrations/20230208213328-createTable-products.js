@@ -1,6 +1,6 @@
 'use strict';
 
-const { DataTypes } = require('sequelize');
+const DataTypes = require('sequelize');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
     await queryInterface.createTable(
       'products',
       {
-        id: {
+        id_product: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true
@@ -17,7 +17,7 @@ module.exports = {
           type: DataTypes.STRING,
           allowNull: false
         },
-        description: {
+        category: {
           type: DataTypes.STRING,
           allowNull: false
         },
@@ -26,12 +26,28 @@ module.exports = {
           allowNull: false
         },
         price: {
-          type: DataTypes.FLOAT,
+          type: DataTypes.DECIMAL(10, 2),
           allowNull: false
+        },
+        producer: {
+          type: DataTypes.STRING,
+          allowNull: false
+        },
+        created_at: {
+          type: DataTypes.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        },
+        updated_at: {
+          type: DataTypes.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         }
       }, {
-        timestamps: false,
+        timestamps: true,
         tableName: 'products',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
       }
     );
   },

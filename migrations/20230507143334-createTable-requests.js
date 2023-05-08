@@ -6,39 +6,43 @@ const DataTypes = require('sequelize');
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable(
-      'profiles',
+      'requests',
       {
-        id_profile: {
-          allowNull: false,
-          autoIncrement: true,
+        id_request: {
+          type: DataTypes.INTEGER,
           primaryKey: true,
-          type: DataTypes.INTEGER
+          autoIncrement: true
         },
-        profile: {
+        status: {
           type: DataTypes.STRING,
+          allowNull: false
+        },
+        price_total: {
+          type: DataTypes.DECIMAL(10, 2),
           allowNull: false,
-          unique: true
+        },
+        id_user: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'users',
+            key: 'id_user',
+          }
         },
         created_at: {
           type: DataTypes.DATE,
           allowNull: false,
           defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
         },
-        updated_at: {
-          type: DataTypes.DATE,
-          allowNull: false,
-          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-        }
       }, {
-        timestamps: true,
-        tableName: 'profiles',
+        timestamps: false,
+        tableName: 'requests',
         createdAt: 'created_at',
-        updatedAt: 'updated_at',
       }
     );
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.dropTable('profiles')
+    await queryInterface.dropTable('requests');
   }
 };

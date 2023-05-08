@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 import { database } from '../instances/mysql';
 
 import ProfilesSchema from './Profiles';
@@ -11,13 +11,15 @@ interface UsersInstance extends Model {
   email: string;
   datebirth: Date;
   profile: number;
+  created_at: Date;
+  updated_at: Date;
 }
 
 
-const UserSchema = database.define<UsersInstance>(
+const UsersSchema = database.define<UsersInstance>(
   'users',
   {
-    id: {
+    id_user: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -34,23 +36,39 @@ const UserSchema = database.define<UsersInstance>(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    datebirth: {
-      type: DataTypes.STRING,
+    birthday: {
+      type: DataTypes.DATE,
       allowNull: false,
     },
-    profile: {
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+    id_profile: {
       type: DataTypes.INTEGER,
-      autoIncrement: false,
       allowNull: false,
       references: {
         model: ProfilesSchema,
-        key: 'id',
+        key: 'id_profile',
       }
     }
   }, {
     timestamps: false,
     tableName: 'users',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    hooks: {
+      beforeSave: (user, options) => {
+        user.updated_at = new Date();
+      },
+    },
   }
 )
 
-export default UserSchema;
+export default UsersSchema;

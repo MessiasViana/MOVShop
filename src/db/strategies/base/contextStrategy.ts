@@ -20,8 +20,8 @@ export default class ContextStrategy extends ICrud {
     return this._database.read(item);
   }
   
-  update(id: any, item: any) {
-    return this._database.update(id, item);
+  update(fildName:string, id: any, item: any) {
+    return this._database.update(fildName, id, item);
   }
   
   delete(id: any) {
